@@ -180,31 +180,60 @@
             <p class="register-subtitle">Daftar untuk mengakses E-Learning SD Negeri 1 Kaduela</p>
 
             <article class="register-panel">
-                <form class="register-form" action="{{ route('elearning.login') }}" method="get">
+                @if ($errors->any())
+                    <div style="margin-bottom: 14px; border: 1px solid #fecaca; border-radius: 10px; background: #fef2f2; padding: 10px 12px; color: #991b1b; font-size: 0.75rem; font-weight: 700;">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <form class="register-form" action="{{ route('register') }}" method="post">
+                    @csrf
                     <div class="register-field">
-                        <label for="nama">Nama Lengkap *</label>
-                        <input id="nama" name="nama" type="text" required>
+                        <label for="nama_siswa">Nama Lengkap *</label>
+                        <input id="nama_siswa" name="nama_siswa" type="text" value="{{ old('nama_siswa') }}" required>
                     </div>
 
                     <div class="register-field">
-                        <label for="kelas">Kelas *</label>
-                        <select id="kelas" name="kelas" required>
+                        <label for="username">Username *</label>
+                        <input id="username" name="username" type="text" value="{{ old('username') }}" required autocomplete="username">
+                    </div>
+
+                    <div class="register-field">
+                        <label for="nis">NIS *</label>
+                        <input id="nis" name="nis" type="text" value="{{ old('nis') }}" required>
+                    </div>
+
+                    <div class="register-field">
+                        <label for="id_kelas">Kelas *</label>
+                        <select id="id_kelas" name="id_kelas" required>
                             <option value="" selected disabled>Pilih kelas</option>
-                            <option value="1">Kelas 1</option>
-                            <option value="2">Kelas 2</option>
-                            <option value="3">Kelas 3</option>
-                            <option value="4">Kelas 4</option>
-                            <option value="5">Kelas 5</option>
-                            <option value="6">Kelas 6</option>
+                            <option value="1" @selected(old('id_kelas') == 1)>Kelas 1</option>
+                            <option value="2" @selected(old('id_kelas') == 2)>Kelas 2</option>
+                            <option value="3" @selected(old('id_kelas') == 3)>Kelas 3</option>
+                            <option value="4" @selected(old('id_kelas') == 4)>Kelas 4</option>
+                            <option value="5" @selected(old('id_kelas') == 5)>Kelas 5</option>
+                            <option value="6" @selected(old('id_kelas') == 6)>Kelas 6</option>
                         </select>
                     </div>
 
                     <div class="register-field">
-                        <label for="whatsapp">No. WhatsApp Orang Tua *</label>
-                        <input id="whatsapp" name="whatsapp" type="tel" required>
+                        <label for="jk">Jenis Kelamin *</label>
+                        <select id="jk" name="jk" required>
+                            <option value="" selected disabled>Pilih jenis kelamin</option>
+                            <option value="L" @selected(old('jk') === 'L')>Laki-laki</option>
+                            <option value="P" @selected(old('jk') === 'P')>Perempuan</option>
+                        </select>
                     </div>
 
-                    <p class="register-help">Untuk notifikasi hasil ujian kelas 6</p>
+                    <div class="register-field">
+                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                        <input id="tanggal_lahir" name="tanggal_lahir" type="date" value="{{ old('tanggal_lahir') }}">
+                    </div>
+
+                    <div class="register-field">
+                        <label for="alamat">Alamat</label>
+                        <input id="alamat" name="alamat" type="text" value="{{ old('alamat') }}">
+                    </div>
 
                     <div class="password-grid">
                         <div class="register-field">

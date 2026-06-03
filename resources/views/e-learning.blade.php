@@ -129,10 +129,17 @@
             <p class="student-login-subtitle">E-Learning SD Negeri 1 Kaduela</p>
 
             <article class="student-login-panel">
-                <form class="student-login-form" action="#" method="get">
+                @if ($errors->any())
+                    <div style="margin-bottom: 14px; border: 1px solid #fecaca; border-radius: 8px; background: #fef2f2; padding: 10px 12px; color: #991b1b; font-size: 0.75rem; font-weight: 700;">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <form class="student-login-form" action="{{ route('login') }}" method="post">
+                    @csrf
                     <div class="student-field">
-                        <label for="nama">Nama Lengkap *</label>
-                        <input id="nama" name="nama" type="text" required autocomplete="name">
+                        <label for="username">Username *</label>
+                        <input id="username" name="username" type="text" value="{{ old('username') }}" required autocomplete="username">
                     </div>
 
                     <div class="student-field">
