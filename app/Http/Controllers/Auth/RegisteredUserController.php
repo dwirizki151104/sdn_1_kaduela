@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -17,7 +18,9 @@ class RegisteredUserController extends Controller
 {
     public function create(): View
     {
-        return view('e-learning-register');
+        return view('auth.register', [
+            'kelasList' => Kelas::orderBy('nama_kelas')->get(),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse

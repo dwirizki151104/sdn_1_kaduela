@@ -28,9 +28,7 @@ Route::get('/profil-sekolah', function () {
     return view('profil');
 })->name('profil');
 
-Route::get('/e-learning', function () {
-    return view('e-learning');
-})->name('elearning');
+Route::get('/e-learning', fn () => redirect()->route('elearning.login'))->name('elearning');
 
 Route::middleware('guest')->group(function () {
     Route::get('/e-learning/login', [AuthenticatedSessionController::class, 'create'])->name('elearning.login');

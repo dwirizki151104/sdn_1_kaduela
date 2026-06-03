@@ -13,7 +13,7 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(): View
     {
-        return view('e-learning');
+        return view('auth.login');
     }
 
     public function store(Request $request): RedirectResponse
