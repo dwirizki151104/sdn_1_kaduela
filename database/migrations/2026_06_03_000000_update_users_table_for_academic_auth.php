@@ -17,7 +17,7 @@ return new class extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             if (! Schema::hasColumn('users', 'username')) {
-                $table->string('username')->nullable()->after('id_user');
+                $table->string('username', 50)->nullable()->after('id_user');
             }
 
             if (! Schema::hasColumn('users', 'role')) {
@@ -59,7 +59,7 @@ return new class extends Migration
             });
         }
 
-        DB::statement('ALTER TABLE users MODIFY username VARCHAR(255) NOT NULL');
+        DB::statement('ALTER TABLE users MODIFY username VARCHAR(50) NOT NULL');
 
         Schema::table('users', function (Blueprint $table) {
             if (Schema::hasColumn('users', 'email')) {

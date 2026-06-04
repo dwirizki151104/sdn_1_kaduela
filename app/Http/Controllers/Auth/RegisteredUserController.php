@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
+            'username' => ['required', 'string', 'max:50', 'unique:users,username'],
             'nis' => ['required', 'string', 'max:30', 'unique:siswa,nis'],
             'nama_siswa' => ['required', 'string', 'max:255'],
             'jk' => ['required', 'in:L,P'],

@@ -14,6 +14,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $primaryKey = 'id_user';
+    public const UPDATED_AT = null;
 
     protected $fillable = [
         'username',
@@ -24,7 +25,6 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     public function guru()
