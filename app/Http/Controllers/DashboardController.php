@@ -23,25 +23,68 @@ class DashboardController extends Controller
 
         if ($user->role === 'guru') {
             $guru = $user->guru?->load(['kelasWali', 'mengajar.kelas', 'mengajar.mataPelajaran']);
+            $mengajarIds = $guru?->mengajar->pluck('id_mengajar') ?? collect();
 
             return view('dashboard.guru', [
                 'guru' => $guru,
                 'jumlahMengajar' => $guru?->mengajar->count() ?? 0,
-                'jumlahModul' => Modul::whereIn('id_mengajar', $guru?->mengajar->pluck('id_mengajar') ?? [])->count(),
-                'jumlahTugas' => Tugas::whereIn('id_mengajar', $guru?->mengajar->pluck('id_mengajar') ?? [])->count(),
-                'jumlahQuiz' => Quiz::whereIn('id_mengajar', $guru?->mengajar->pluck('id_mengajar') ?? [])->count(),
+                'jumlahModul' => Modul::whereIn('id_mengajar', $mengajarIds)->count(),
+                'jumlahTugas' => Tugas::whereIn('id_mengajar', $mengajarIds)->count(),
+                'jumlahQuiz' => Quiz::whereIn('id_mengajar', $mengajarIds)->count(),
+                'modulTerbaru' => Modul::with('mengajar.kelas', 'mengajar.mataPelajaran')
+                    ->whereIn('id_mengajar', $mengajarIds)
+                    ->latest()
+                    ->take(5)
+                    ->get(),
+                'tugasTerbaru' => Tugas::with('mengajar.kelas', 'mengajar.mataPelajaran')
+                    ->whereIn('id_mengajar', $mengajarIds)
+                    ->latest()
+                    ->take(5)
+                    ->get(),
+                'quizTerbaru' => Quiz::with('mengajar.kelas', 'mengajar.mataPelajaran', 'soal')
+                    ->whereIn('id_mengajar', $mengajarIds)
+                    ->latest()
+                    ->take(5)
+                    ->get(),
             ]);
         }
 
         if ($user->role === 'siswa') {
             $siswa = $user->siswa?->load(['kelas']);
+            $kelasId = $siswa?->id_kelas;
 
             return view('dashboard.siswa', [
                 'siswa' => $siswa,
+                'jumlahMateri' => Modul::whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))->count(),
+                'jumlahTugas' => Tugas::whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))->count(),
+                'jumlahQuiz' => Quiz::whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))->count(),
                 'jumlahTugasDikumpulkan' => $siswa?->pengumpulanTugas()->count() ?? 0,
                 'jumlahQuizDikerjakan' => $siswa?->pengerjaanQuiz()->count() ?? 0,
                 'jumlahNilai' => $siswa?->nilai()->count() ?? 0,
                 'rataNilaiAkhir' => $siswa?->nilai()->avg('nilai_akhir'),
+                'materiList' => Modul::with('mengajar.guru', 'mengajar.kelas', 'mengajar.mataPelajaran')
+                    ->whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))
+                    ->latest()
+                    ->get(),
+                'tugasList' => Tugas::with([
+                    'mengajar.guru',
+                    'mengajar.kelas',
+                    'mengajar.mataPelajaran',
+                    'pengumpulan' => fn ($query) => $query->where('id_siswa', $siswa?->id_siswa),
+                ])
+                    ->whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))
+                    ->latest()
+                    ->get(),
+                'quizList' => Quiz::with([
+                    'mengajar.guru',
+                    'mengajar.kelas',
+                    'mengajar.mataPelajaran',
+                    'soal.pilihanJawaban',
+                    'pengerjaan' => fn ($query) => $query->where('id_siswa', $siswa?->id_siswa),
+                ])
+                    ->whereHas('mengajar', fn ($query) => $query->where('id_kelas', $kelasId))
+                    ->latest()
+                    ->get(),
             ]);
         }
 
@@ -65,6 +108,24 @@ class DashboardController extends Controller
             'modulTerbaru' => Modul::with('mengajar.kelas', 'mengajar.mataPelajaran')->latest()->take(5)->get(),
             'tugasTerbaru' => Tugas::with('mengajar.kelas', 'mengajar.mataPelajaran')->latest()->take(5)->get(),
             'quizTerbaru' => Quiz::with('mengajar.kelas', 'mengajar.mataPelajaran')->latest()->take(5)->get(),
+            'rekapPengumpulanTugas' => Tugas::with('mengajar.kelas', 'mengajar.mataPelajaran')
+                ->withCount('pengumpulan')
+                ->latest()
+                ->take(8)
+                ->get(),
+            'pengumpulanTerbaru' => PengumpulanTugas::with('siswa.kelas', 'tugas.mengajar.kelas', 'tugas.mengajar.mataPelajaran')
+                ->latest('tanggal_kumpul')
+                ->take(10)
+                ->get(),
+            'pengerjaanQuizTerbaru' => PengerjaanQuiz::with([
+                'siswa.kelas',
+                'quiz.mengajar.kelas',
+                'quiz.mengajar.mataPelajaran',
+            ])
+                ->whereNotNull('waktu_selesai')
+                ->latest('waktu_selesai')
+                ->take(10)
+                ->get(),
         ]);
     }
 }

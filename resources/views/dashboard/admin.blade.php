@@ -144,5 +144,159 @@
                 </div>
             </article>
         </section>
+
+        <section class="mt-4 grid gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+            <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5">
+                <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                        <h2 class="text-base font-black text-slate-950">Rekap Pengumpulan Per Tugas</h2>
+                        <p class="mt-1 text-xs font-bold text-slate-500">Pantau jumlah siswa yang sudah mengumpulkan tugas.</p>
+                    </div>
+                    <span class="w-fit rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-700">{{ $jumlahPengumpulan }} total pengumpulan</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-100 text-left">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Tugas</th>
+                                <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Kelas</th>
+                                <th class="px-3 py-2.5 text-right text-xs font-black uppercase tracking-wide text-slate-500">Terkumpul</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @forelse ($rekapPengumpulanTugas as $tugas)
+                                @php
+                                    $jumlahSiswaKelas = $tugas->mengajar?->kelas?->siswa()->count() ?? 0;
+                                @endphp
+
+                                <tr class="transition hover:bg-emerald-50/45">
+                                    <td class="px-3 py-3">
+                                        <strong class="block text-sm font-black text-slate-900">{{ $tugas->judul_tugas }}</strong>
+                                        <span class="mt-1 block text-xs font-semibold text-slate-500">{{ $tugas->mengajar->mataPelajaran->nama_mapel ?? '-' }}</span>
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-3 text-sm font-bold text-slate-600">{{ $tugas->mengajar->kelas->nama_kelas ?? '-' }}</td>
+                                    <td class="whitespace-nowrap px-3 py-3 text-right">
+                                        <span class="inline-flex min-h-8 items-center rounded-lg bg-emerald-50 px-3 text-xs font-black text-emerald-700">
+                                            {{ $tugas->pengumpulan_count }} / {{ $jumlahSiswaKelas }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="px-3 py-8 text-center text-sm font-semibold text-slate-500" colspan="3">Belum ada tugas.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="rounded-lg border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5">
+                <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                        <h2 class="text-base font-black text-slate-950">Pengumpulan Terbaru</h2>
+                        <p class="mt-1 text-xs font-bold text-slate-500">Daftar siswa yang sudah mengirim jawaban tugas.</p>
+                    </div>
+                    <span class="w-fit rounded-full bg-slate-100 px-3 py-1.5 text-xs font-black text-slate-500">Database siswa</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-100 text-left">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Siswa</th>
+                                <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Tugas</th>
+                                <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Waktu</th>
+                                <th class="px-3 py-2.5 text-right text-xs font-black uppercase tracking-wide text-slate-500">File</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @forelse ($pengumpulanTerbaru as $pengumpulan)
+                                <tr class="transition hover:bg-emerald-50/45">
+                                    <td class="px-3 py-3">
+                                        <strong class="block text-sm font-black text-slate-900">{{ $pengumpulan->siswa->nama_siswa ?? '-' }}</strong>
+                                        <span class="mt-1 block text-xs font-semibold text-slate-500">{{ $pengumpulan->siswa->kelas->nama_kelas ?? '-' }}</span>
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        <strong class="block text-sm font-black text-slate-900">{{ $pengumpulan->tugas->judul_tugas ?? '-' }}</strong>
+                                        <span class="mt-1 block text-xs font-semibold text-slate-500">
+                                            {{ $pengumpulan->tugas->mengajar->mataPelajaran->nama_mapel ?? '-' }}
+                                            @if (filled($pengumpulan->nilai))
+                                                | Nilai {{ $pengumpulan->nilai }}
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-3 text-sm font-bold text-slate-600">{{ $pengumpulan->tanggal_kumpul?->format('d M Y H:i') ?? '-' }}</td>
+                                    <td class="whitespace-nowrap px-3 py-3 text-right">
+                                        @if (filled($pengumpulan->file_jawaban))
+                                            <a class="inline-flex min-h-8 items-center rounded-lg bg-emerald-50 px-3 text-xs font-black text-emerald-700 transition hover:bg-emerald-100" href="{{ asset('storage/' . $pengumpulan->file_jawaban) }}" target="_blank">
+                                                Buka File
+                                            </a>
+                                        @else
+                                            <span class="text-xs font-bold text-slate-400">-</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="px-3 py-8 text-center text-sm font-semibold text-slate-500" colspan="4">Belum ada pengumpulan tugas.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <section class="mt-4 rounded-lg border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/5">
+            <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <h2 class="text-base font-black text-slate-950">Nilai Quiz dan Ulangan Harian</h2>
+                    <p class="mt-1 text-xs font-bold text-slate-500">Nilai otomatis dari database pengerjaan quiz siswa.</p>
+                </div>
+                <span class="w-fit rounded-full bg-blue-50 px-3 py-1.5 text-xs font-black text-blue-700">{{ $jumlahPengerjaanQuiz }} pengerjaan quiz</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-100 text-left">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Siswa</th>
+                            <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Quiz/Ulangan</th>
+                            <th class="px-3 py-2.5 text-xs font-black uppercase tracking-wide text-slate-500">Waktu Selesai</th>
+                            <th class="px-3 py-2.5 text-right text-xs font-black uppercase tracking-wide text-slate-500">Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse ($pengerjaanQuizTerbaru as $pengerjaan)
+                            <tr class="transition hover:bg-blue-50/45">
+                                <td class="px-3 py-3">
+                                    <strong class="block text-sm font-black text-slate-900">{{ $pengerjaan->siswa->nama_siswa ?? '-' }}</strong>
+                                    <span class="mt-1 block text-xs font-semibold text-slate-500">{{ $pengerjaan->siswa->kelas->nama_kelas ?? '-' }}</span>
+                                </td>
+                                <td class="px-3 py-3">
+                                    <strong class="block text-sm font-black text-slate-900">{{ $pengerjaan->quiz->judul_quiz ?? '-' }}</strong>
+                                    <span class="mt-1 block text-xs font-semibold text-slate-500">
+                                        {{ $pengerjaan->quiz->mengajar->mataPelajaran->nama_mapel ?? '-' }}
+                                        | {{ $pengerjaan->quiz->mengajar->kelas->nama_kelas ?? '-' }}
+                                    </span>
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-3 text-sm font-bold text-slate-600">{{ $pengerjaan->waktu_selesai?->format('d M Y H:i') ?? '-' }}</td>
+                                <td class="whitespace-nowrap px-3 py-3 text-right">
+                                    <span class="inline-flex min-h-8 items-center rounded-lg bg-blue-50 px-3 text-xs font-black text-blue-700">
+                                        {{ filled($pengerjaan->nilai) ? number_format((float) $pengerjaan->nilai, 2) : '-' }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td class="px-3 py-8 text-center text-sm font-semibold text-slate-500" colspan="4">Belum ada nilai quiz atau ulangan harian.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
     @endcomponent
 @endsection

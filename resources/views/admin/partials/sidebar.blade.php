@@ -1,17 +1,26 @@
 @php
     $adminMenu = [
         ['label' => 'Dashboard', 'icon' => 'M3 13h8V3H3v10Zm10 8h8V11h-8v10ZM3 21h8v-6H3v6Zm10-12h8V3h-8v6Z', 'href' => route('dashboard'), 'active' => request()->routeIs('dashboard')],
-        ['label' => 'Data User', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75', 'href' => route('admin.master.index', 'users'), 'active' => request()->is('admin/master/users*')],
-        ['label' => 'Data Guru', 'icon' => 'M22 10 12 5 2 10l10 5 10-5ZM6 12v5c3 3 9 3 12 0v-5', 'href' => route('admin.master.index', 'guru'), 'active' => request()->is('admin/master/guru*')],
-        ['label' => 'Data Siswa', 'icon' => 'M4 19.5V6.5A2.5 2.5 0 0 1 6.5 4H20v16H6.5A2.5 2.5 0 0 1 4 17.5Zm3-12h10M7 11h7M7 14h8', 'href' => route('admin.master.index', 'siswa'), 'active' => request()->is('admin/master/siswa*')],
-        ['label' => 'Data Kelas', 'icon' => 'M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 8h1m4 0h1M9 12h1m4 0h1M9 16h1m4 0h1', 'href' => route('admin.master.index', 'kelas'), 'active' => request()->is('admin/master/kelas*')],
-        ['label' => 'Mata Pelajaran', 'icon' => 'M12 6.25c-2-1.5-5-2-8-1.25v13c3-.75 6-.25 8 1.25m0-13c2-1.5 5-2 8-1.25v13c-3-.75-6-.25-8 1.25m0-13v13', 'href' => route('admin.master.index', 'mata-pelajaran'), 'active' => request()->is('admin/master/mata-pelajaran*')],
-        ['label' => 'Data Mengajar', 'icon' => 'M7 8h10M7 12h6m-8 9h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2Zm12-7 3 3 4-6', 'href' => route('admin.master.index', 'mengajar'), 'active' => request()->is('admin/master/mengajar*')],
-        ['label' => 'Modul', 'icon' => 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 13h8M8 17h6', 'href' => route('admin.master.index', 'modul'), 'active' => request()->is('admin/master/modul*')],
-        ['label' => 'Tugas', 'icon' => 'M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', 'href' => route('admin.master.index', 'tugas'), 'active' => request()->is('admin/master/tugas*')],
-        ['label' => 'Quiz', 'icon' => 'M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2.5-3 4m.08 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z', 'href' => route('admin.master.index', 'quiz'), 'active' => request()->is('admin/master/quiz*')],
-        ['label' => 'Nilai', 'icon' => 'M4 19V5m0 14h16M8 17V9m4 8V5m4 12v-6', 'href' => route('admin.master.index', 'nilai'), 'active' => request()->is('admin/master/nilai*')],
+        ['label' => 'Data User', 'resource' => 'users', 'icon' => 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75', 'href' => route('admin.master.index', 'users'), 'active' => request()->is('admin/master/users*')],
+        ['label' => 'Data Guru', 'resource' => 'guru', 'icon' => 'M22 10 12 5 2 10l10 5 10-5ZM6 12v5c3 3 9 3 12 0v-5', 'href' => route('admin.master.index', 'guru'), 'active' => request()->is('admin/master/guru*')],
+        ['label' => 'Data Siswa', 'resource' => 'siswa', 'icon' => 'M4 19.5V6.5A2.5 2.5 0 0 1 6.5 4H20v16H6.5A2.5 2.5 0 0 1 4 17.5Zm3-12h10M7 11h7M7 14h8', 'href' => route('admin.master.index', 'siswa'), 'active' => request()->is('admin/master/siswa*')],
+        ['label' => 'Data Kelas', 'resource' => 'kelas', 'icon' => 'M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 8h1m4 0h1M9 12h1m4 0h1M9 16h1m4 0h1', 'href' => route('admin.master.index', 'kelas'), 'active' => request()->is('admin/master/kelas*')],
+        ['label' => 'Mata Pelajaran', 'resource' => 'mata-pelajaran', 'icon' => 'M12 6.25c-2-1.5-5-2-8-1.25v13c3-.75 6-.25 8 1.25m0-13c2-1.5 5-2 8-1.25v13c-3-.75-6-.25-8 1.25m0-13v13', 'href' => route('admin.master.index', 'mata-pelajaran'), 'active' => request()->is('admin/master/mata-pelajaran*')],
+        ['label' => 'Data Mengajar', 'resource' => 'mengajar', 'icon' => 'M7 8h10M7 12h6m-8 9h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2Zm12-7 3 3 4-6', 'href' => route('admin.master.index', 'mengajar'), 'active' => request()->is('admin/master/mengajar*')],
+        ['label' => 'Modul', 'resource' => 'modul', 'icon' => 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 13h8M8 17h6', 'href' => route('admin.master.index', 'modul'), 'active' => request()->is('admin/master/modul*')],
+        ['label' => 'Tugas', 'resource' => 'tugas', 'icon' => 'M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11', 'href' => route('admin.master.index', 'tugas'), 'active' => request()->is('admin/master/tugas*')],
+        ['label' => 'Pengumpulan Tugas', 'resource' => 'pengumpulan-tugas', 'icon' => 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M9 15l2 2 4-5', 'href' => route('admin.master.index', 'pengumpulan-tugas'), 'active' => request()->is('admin/master/pengumpulan-tugas*')],
+        ['label' => 'Quiz', 'resource' => 'quiz', 'icon' => 'M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2.5-3 4m.08 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z', 'href' => route('admin.master.index', 'quiz'), 'active' => request()->is('admin/master/quiz*')],
+        ['label' => 'Jawaban Siswa', 'resource' => 'jawaban-siswa', 'icon' => 'M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11M7 7h7M7 11h5M7 15h3', 'href' => route('admin.master.index', 'jawaban-siswa'), 'active' => request()->is('admin/master/jawaban-siswa*')],
+        ['label' => 'Nilai Quiz', 'resource' => 'nilai-quiz', 'icon' => 'M4 19V5m0 14h16M8 17V9m4 8V5m4 12v-6M18 7l2 2 3-5', 'href' => route('admin.master.index', 'nilai-quiz'), 'active' => request()->is('admin/master/nilai-quiz*')],
+        ['label' => 'Nilai', 'resource' => 'nilai', 'icon' => 'M4 19V5m0 14h16M8 17V9m4 8V5m4 12v-6', 'href' => route('admin.master.index', 'nilai'), 'active' => request()->is('admin/master/nilai') || request()->is('admin/master/nilai/*')],
     ];
+
+    $guruAllowedResources = ['modul', 'tugas', 'pengumpulan-tugas', 'quiz', 'jawaban-siswa', 'nilai-quiz', 'nilai'];
+
+    if (auth()->user()?->role === 'guru') {
+        $adminMenu = array_values(array_filter($adminMenu, fn ($item) => empty($item['resource']) || in_array($item['resource'], $guruAllowedResources, true)));
+    }
 @endphp
 
 <aside class="bg-[#123b33] p-3 text-white lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden lg:p-4">
@@ -50,7 +59,7 @@
         </nav>
 
         <div class="mt-4 shrink-0 border-t border-white/10 pt-4">
-            <p class="mb-3 text-[0.7rem] font-bold leading-relaxed text-white/55">Admin mengelola data master sekolah dan memantau aktivitas pembelajaran digital.</p>
+            <p class="mb-3 text-[0.7rem] font-bold leading-relaxed text-white/55">{{ auth()->user()?->role === 'guru' ? 'Guru dapat memantau materi, tugas, quiz, jawaban, dan nilai sesuai data mengajarnya.' : 'Admin mengelola data master sekolah dan memantau aktivitas pembelajaran digital.' }}</p>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button class="flex min-h-11 w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-[0.78rem] font-extrabold text-white/75 transition hover:bg-white/10 hover:text-white" type="submit">

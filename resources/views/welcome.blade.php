@@ -5,7 +5,7 @@
 @section('content')
     <section
         class="grid min-h-[360px] place-items-center bg-cover bg-center px-4 text-center text-white md:min-h-[430px]"
-        style="background-image: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.62)), url('https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=1800&q=82')"
+        style="background-image: linear-gradient(rgba(0,0,0,.32), rgba(0,0,0,.62)), url('{{ asset('images/sekolah.jpg') }}')"
         aria-labelledby="hero-title"
     >
         <div class="animate-fade-up w-full max-w-[920px] pt-6 [text-shadow:0_2px_10px_rgba(0,0,0,.42)]">
@@ -23,10 +23,10 @@
 
     <section class="bg-[#efefee] px-4 py-11 md:py-14" aria-label="Statistik sekolah">
         <div class="mx-auto grid w-full max-w-[980px] gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-4">
-            @foreach ([['74', 'Siswa Aktif'], ['12', 'Guru Berpengalaman'], ['15', 'Mata Pelajaran'], ['35+', 'Tahun Berdiri']] as [$number, $label])
+            @foreach ($schoolStats as $stat)
                 <article class="grid min-h-32 place-items-center content-center gap-2 rounded-md bg-white p-5 text-center shadow-[0_2px_5px_rgba(17,24,39,.18)] transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                    <strong class="text-2xl font-black">{{ $number }}</strong>
-                    <span class="text-xs text-[#49534f]">{{ $label }}</span>
+                    <strong class="text-2xl font-black">{{ $stat['number'] }}</strong>
+                    <span class="text-xs text-[#49534f]">{{ $stat['label'] }}</span>
                 </article>
             @endforeach
         </div>
@@ -69,11 +69,23 @@
         <div class="mx-auto w-full max-w-[980px]">
             <h2 class="mb-10 text-center text-[clamp(1.5rem,3vw,2.05rem)] font-black leading-tight">Berita & Pengumuman</h2>
 
+            @php
+                $spmbImage = file_exists(public_path('images/spmb.jpg'))
+                    ? asset('images/spmb.jpg')
+                    : 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=640&q=80';
+                $workshopImage = file_exists(public_path('images/workshop-digital.jpg'))
+                    ? asset('images/workshop-digital.jpg')
+                    : 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=640&q=80';
+                $libraryImage = file_exists(public_path('images/perpustakaan-digital.jpg'))
+                    ? asset('images/perpustakaan-digital.jpg')
+                    : 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=640&q=80';
+            @endphp
+
             <div class="grid gap-5 md:grid-cols-3 md:gap-8">
                 @foreach ([
-                    ['Sistem Penerimaan Murid Baru 2026/2027', 'Pendaftaran siswa baru tahun ajaran 2026/2027 telah dibuka. Informasi lengkap dapat dilihat di pengumuman sekolah.', 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=640&q=80', 'Pengumuman penerimaan murid baru'],
-                    ['Workshop Pembelajaran Digital', 'Guru-guru mengikuti pelatihan pembelajaran digital untuk meningkatkan kualitas e-learning.', 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=640&q=80', 'Workshop pembelajaran digital untuk guru'],
-                    ['Perpustakaan Digital Diluncurkan', 'Siswa kini dapat mengakses ribuan buku digital melalui platform perpustakaan online sekolah.', 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=640&q=80', 'Siswa menggunakan komputer di perpustakaan digital'],
+                    ['Sistem Penerimaan Murid Baru 2026/2027', 'Pendaftaran siswa baru tahun ajaran 2026/2027 telah dibuka. Informasi lengkap dapat dilihat di pengumuman sekolah.', $spmbImage, 'Pengumuman penerimaan murid baru SD Negeri 1 Kaduela'],
+                    ['Workshop Pembelajaran Digital', 'Guru-guru mengikuti pelatihan pembelajaran digital untuk meningkatkan kualitas e-learning.', $workshopImage, 'Workshop pembelajaran digital untuk guru SD Negeri 1 Kaduela'],
+                    ['Perpustakaan Digital Diluncurkan', 'Siswa kini dapat mengakses ribuan buku digital melalui platform perpustakaan online sekolah.', $libraryImage, 'Siswa mengakses perpustakaan digital SD Negeri 1 Kaduela'],
                 ] as [$title, $description, $image, $alt])
                     <article class="overflow-hidden rounded-md bg-white shadow-[0_2px_5px_rgba(17,24,39,.18)] transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                         <img class="aspect-[1.65] w-full object-cover" src="{{ $image }}" alt="{{ $alt }}">

@@ -11,9 +11,11 @@
                 <p class="mt-1 text-sm font-semibold text-slate-500">Kelola {{ strtolower($config['title']) }} untuk kebutuhan akademik dan e-learning.</p>
             </div>
 
-            <a class="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#0f5a45] px-4 text-sm font-black text-white shadow-lg shadow-emerald-900/10 transition hover:bg-[#103f35]" href="{{ route('admin.master.create', $resource) }}">
-                Tambah Data
-            </a>
+            @if (empty($config['readonly']))
+                <a class="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#0f5a45] px-4 text-sm font-black text-white shadow-lg shadow-emerald-900/10 transition hover:bg-[#103f35]" href="{{ route('admin.master.create', $resource) }}">
+                    Tambah Data
+                </a>
+            @endif
         </div>
 
         @if (session('success'))
@@ -30,7 +32,9 @@
                             @foreach ($config['columns'] as $label)
                                 <th class="px-4 py-3 text-xs font-black uppercase tracking-wide text-slate-500">{{ $label }}</th>
                             @endforeach
-                            <th class="px-4 py-3 text-right text-xs font-black uppercase tracking-wide text-slate-500">Aksi</th>
+                            @if (empty($config['readonly']))
+                                <th class="px-4 py-3 text-right text-xs font-black uppercase tracking-wide text-slate-500">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -38,27 +42,44 @@
                             <tr class="transition hover:bg-emerald-50/45">
                                 @foreach (array_keys($config['columns']) as $column)
                                     <td class="whitespace-nowrap px-4 py-3 text-sm font-semibold text-slate-700">
-                                        {{ \App\Http\Controllers\Admin\MasterDataController::value($record, $column) }}
+                                        @if ($resource === 'modul' && $column === 'file_modul' && filled($record->file_modul))
+                                            <a class="inline-flex min-h-8 items-center rounded-lg bg-emerald-50 px-3 text-xs font-black text-emerald-700 transition hover:bg-emerald-100" href="{{ asset('storage/' . $record->file_modul) }}" target="_blank">
+                                                Buka File
+                                            </a>
+                                        @elseif ($resource === 'pengumpulan-tugas' && $column === 'file_jawaban' && filled($record->file_jawaban))
+                                            <a class="inline-flex min-h-8 items-center rounded-lg bg-emerald-50 px-3 text-xs font-black text-emerald-700 transition hover:bg-emerald-100" href="{{ asset('storage/' . $record->file_jawaban) }}" target="_blank">
+                                                Buka File
+                                            </a>
+                                        @else
+                                            {{ \App\Http\Controllers\Admin\MasterDataController::value($record, $column) }}
+                                        @endif
                                     </td>
                                 @endforeach
-                                <td class="px-4 py-3">
-                                    <div class="flex justify-end gap-2">
-                                        <a class="inline-flex min-h-9 items-center rounded-lg border border-slate-200 px-3 text-xs font-black text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700" href="{{ route('admin.master.edit', [$resource, $record->getKey()]) }}">
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.master.destroy', [$resource, $record->getKey()]) }}" method="post" onsubmit="return confirm('Hapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="inline-flex min-h-9 items-center rounded-lg border border-rose-200 px-3 text-xs font-black text-rose-700 transition hover:bg-rose-50" type="submit">
-                                                Hapus
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                @if (empty($config['readonly']))
+                                    <td class="px-4 py-3">
+                                        <div class="flex justify-end gap-2">
+                                            @if ($resource === 'quiz')
+                                                <a class="inline-flex min-h-9 items-center rounded-lg border border-emerald-200 px-3 text-xs font-black text-emerald-700 transition hover:bg-emerald-50" href="{{ route('admin.quiz.questions.index', $record->getKey()) }}">
+                                                    Soal
+                                                </a>
+                                            @endif
+                                            <a class="inline-flex min-h-9 items-center rounded-lg border border-slate-200 px-3 text-xs font-black text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700" href="{{ route('admin.master.edit', [$resource, $record->getKey()]) }}">
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('admin.master.destroy', [$resource, $record->getKey()]) }}" method="post" onsubmit="return confirm('Hapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="inline-flex min-h-9 items-center rounded-lg border border-rose-200 px-3 text-xs font-black text-rose-700 transition hover:bg-rose-50" type="submit">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
-                                <td class="px-4 py-8 text-center text-sm font-semibold text-slate-500" colspan="{{ count($config['columns']) + 1 }}">
+                                <td class="px-4 py-8 text-center text-sm font-semibold text-slate-500" colspan="{{ count($config['columns']) + (empty($config['readonly']) ? 1 : 0) }}">
                                     Belum ada data.
                                 </td>
                             </tr>

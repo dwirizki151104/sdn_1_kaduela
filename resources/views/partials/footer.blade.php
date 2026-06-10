@@ -12,6 +12,8 @@
             <div class="grid gap-2 text-xs text-white/75">
                 <a class="transition hover:text-white" href="{{ url('/') }}">Beranda</a>
                 <a class="transition hover:text-white" href="{{ route('profil') }}">Profil Sekolah</a>
+                <a class="transition hover:text-white" href="{{ route('spmb') }}">SPMB</a>
+                <a class="transition hover:text-white" href="{{ route('galeri') }}">Galeri</a>
                 <a class="transition hover:text-white" href="{{ url('/#elearning') }}">E-Learning</a>
             </div>
         </div>

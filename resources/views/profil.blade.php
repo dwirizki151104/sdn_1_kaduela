@@ -4,14 +4,11 @@
 @section('meta_description', 'Profil SD Negeri 1 Kaduela: sambutan kepala sekolah, visi misi, fasilitas, prestasi, dan tenaga pendidik.')
 
 @section('content')
-    <section class="relative overflow-hidden bg-[#0f5a45] px-4 py-14 text-center text-white md:py-20">
-        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 24rem), radial-gradient(circle at 80% 10%, rgba(245,180,52,.3), transparent 18rem)"></div>
-        <div class="animate-fade-up relative mx-auto max-w-4xl">
-            <p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-100">Profil Sekolah</p>
-            <h1 class="text-[30px] font-black leading-tight">Mengenal Lebih Dekat SD Negeri 1 Kaduela</h1>
-            <p class="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/80 md:text-base">
-                Sekolah dasar yang tumbuh bersama masyarakat Kaduela melalui pembelajaran bermakna, karakter kuat, dan lingkungan belajar yang nyaman.
-            </p>
+    <section class="bg-[#0f5a45] px-4 py-12 text-center text-white sm:py-14 md:py-20">
+        <div class="animate-fade-up mx-auto max-w-4xl">
+            <h1 class="text-[clamp(2rem,5vw,3.1rem)] font-black leading-tight">Mengenal Lebih Dekat SD Negeri 1 Kaduela</h1>
+            <p class="mt-2 text-base font-semibold text-white/90">Sekolah dasar yang tumbuh bersama masyarakat Kaduela</p>
+            <p class="mt-1 text-sm font-semibold text-white/80">Pembelajaran bermakna, karakter kuat, dan lingkungan belajar yang nyaman</p>
         </div>
     </section>
 
@@ -20,7 +17,7 @@
             <div class="animate-fade-up overflow-hidden rounded-lg shadow-xl">
                 <img
                     class="aspect-[4/3] w-full object-cover"
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=720&q=80"
+                    src="{{ asset('images/kepala-sekolah.jpg') }}"
                     alt="Kepala sekolah SD Negeri 1 Kaduela"
                 >
             </div>
@@ -54,7 +51,7 @@
             <div class="animate-fade-up overflow-hidden rounded-lg shadow-xl">
                 <img
                     class="aspect-[4/3] w-full object-cover"
-                    src="https://images.unsplash.com/photo-1588544108061-3c44c505d45d?auto=format&fit=crop&w=760&q=80"
+                    src="{{ asset('images/sekolah.jpg') }}"
                     alt="Gedung dan lingkungan sekolah"
                 >
             </div>
@@ -113,11 +110,23 @@
                 <h2 class="text-2xl font-black md:text-3xl">Prestasi Sekolah</h2>
             </div>
 
+            @php
+                $literasiImage = file_exists(public_path('images/prestasi-literasi.jpg'))
+                    ? asset('images/prestasi-literasi.jpg')
+                    : 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=520&q=80';
+                $paiImage = file_exists(public_path('images/prestasi-pai.jpg'))
+                    ? asset('images/prestasi-pai.jpg')
+                    : 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=520&q=80';
+                $olahragaImage = file_exists(public_path('images/prestasi-olahraga.jpg'))
+                    ? asset('images/prestasi-olahraga.jpg')
+                    : 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=520&q=80';
+            @endphp
+
             <div class="grid gap-5 md:grid-cols-3">
                 @foreach ([
-                    ['Juara Lomba Literasi', 'Mendorong budaya membaca dan menulis sejak dini.', 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=520&q=80'],
-                    ['Kegiatan Pramuka Aktif', 'Membentuk kemandirian, disiplin, dan kerja sama.', 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=520&q=80'],
-                    ['Prestasi Olahraga', 'Mengembangkan kesehatan jasmani dan sportivitas.', 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=520&q=80'],
+                    ['Juara Lomba Literasi', 'Mendorong budaya membaca, bahasa, dan keberanian berprestasi.', $literasiImage],
+                    ['Prestasi PAI', 'Mengembangkan karakter, hafalan, dan kecintaan pada nilai keagamaan.', $paiImage],
+                    ['Prestasi Lomba Cerita Bergambar', 'Mengembangkan kesehatan jasmani dan sportivitas.', $olahragaImage],
                 ] as [$title, $description, $image])
                     <article class="animate-fade-up overflow-hidden rounded-lg bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl">
                         <img class="aspect-[1.55] w-full object-cover" src="{{ $image }}" alt="{{ $title }}">
@@ -141,13 +150,13 @@
             <div class="animate-fade-up overflow-hidden rounded-lg shadow-xl">
                 <img
                     class="aspect-[2.8] min-h-52 w-full object-cover"
-                    src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=82"
+                   src="{{ asset('images/guru-tenaga-kependidikan.jpg') }}"
                     alt="Guru dan tenaga kependidikan SD Negeri 1 Kaduela"
                 >
             </div>
 
             <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach (['Kepala Sekolah', 'Guru Kelas I', 'Guru Kelas II', 'Guru Kelas III', 'Guru Kelas IV', 'Guru Kelas V', 'Guru Kelas VI', 'Guru PJOK'] as $role)
+                @foreach (['Kepala Sekolah', 'Guru Kelas I', 'Guru Kelas II', 'Guru Kelas III', 'Guru Kelas IV', 'Guru Kelas V', 'Guru Kelas VI', 'Guru PJOK' ,'Guru SBK' ,'Guru PAI' ,'Penjaga Sekolah'] as $role)
                     <article class="animate-fade-up rounded-lg bg-[#f7f8f7] p-5 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl">
                         <div class="mx-auto mb-3 h-14 w-14 rounded-full bg-gradient-to-br from-[#0f5a45] to-[#f5b434]"></div>
                         <h3 class="text-sm font-extrabold">{{ $role }}</h3>

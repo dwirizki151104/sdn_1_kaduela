@@ -18,11 +18,15 @@ abstract class CrudController extends Controller
 
     public function index(): JsonResponse
     {
+        $this->authorizeAdmin();
+
         return response()->json($this->query()->latest()->paginate(15));
     }
 
     public function store(Request $request): JsonResponse
     {
+        $this->authorizeAdmin();
+
         $record = $this->model::create($request->validate($this->rules()));
 
         return response()->json($record->load($this->relations), 201);
@@ -30,11 +34,15 @@ abstract class CrudController extends Controller
 
     public function show(int $id): JsonResponse
     {
+        $this->authorizeAdmin();
+
         return response()->json($this->find($id));
     }
 
     public function update(Request $request, int $id): JsonResponse
     {
+        $this->authorizeAdmin();
+
         $record = $this->find($id);
         $record->update($request->validate($this->rules($record)));
 
@@ -43,6 +51,8 @@ abstract class CrudController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
+        $this->authorizeAdmin();
+
         $this->find($id)->delete();
 
         return response()->json(['message' => 'Data berhasil dihapus.']);
@@ -63,5 +73,10 @@ abstract class CrudController extends Controller
     protected function find(int $id): Model
     {
         return $this->query()->findOrFail($id);
+    }
+
+    private function authorizeAdmin(): void
+    {
+        abort_if(auth()->user()?->role !== 'admin', 403);
     }
 }

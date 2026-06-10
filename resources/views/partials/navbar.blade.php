@@ -15,8 +15,8 @@
             <div class="hidden items-center gap-6 text-xs font-bold md:flex">
                 <a class="nav-link" href="{{ url('/') }}">Beranda</a>
                 <a class="nav-link" href="{{ route('profil') }}">Profil Sekolah</a>
-                <a class="nav-link" href="{{ url('/#spmb') }}">SPMB</a>
-                <a class="nav-link" href="{{ url('/#galeri') }}">Galeri</a>
+                <a class="nav-link" href="{{ route('spmb') }}">SPMB</a>
+                <a class="nav-link" href="{{ route('galeri') }}">Galeri</a>
                 <a class="nav-link" href="{{ route('elearning') }}">E-Learning</a>
             </div>
         </div>
@@ -25,8 +25,8 @@
             <div class="grid gap-1 py-3">
                 <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ url('/') }}">Beranda</a>
                 <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ route('profil') }}">Profil Sekolah</a>
-                <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ url('/#spmb') }}">SPMB</a>
-                <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ url('/#galeri') }}">Galeri</a>
+                <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ route('spmb') }}">SPMB</a>
+                <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ route('galeri') }}">Galeri</a>
                 <a class="rounded-md px-3 py-2 transition hover:bg-white/10" href="{{ route('elearning') }}">E-Learning</a>
             </div>
         </div>
