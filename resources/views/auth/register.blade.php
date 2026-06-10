@@ -171,6 +171,11 @@
                         <input id="alamat" name="alamat" type="text" value="{{ old('alamat') }}">
                     </div>
 
+                    <div class="auth-field">
+                        <label for="no_hp">No WhatsApp</label>
+                        <input id="no_hp" name="no_hp" type="text" value="{{ old('no_hp') }}" placeholder="081234567890">
+                    </div>
+
                     <div class="auth-grid">
                         <div class="auth-field">
                             <label for="password">Password</label>

@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
             'nama_siswa' => ['required', 'string', 'max:255'],
             'jk' => ['required', 'in:L,P'],
             'tanggal_lahir' => ['nullable', 'date'],
+            'no_hp' => ['nullable', 'string', 'max:20'],
             'alamat' => ['nullable', 'string'],
             'id_kelas' => ['required', 'exists:kelas,id_kelas'],
             'password' => ['required', 'confirmed', Password::defaults()],
@@ -50,6 +51,7 @@ class RegisteredUserController extends Controller
                 'nama_siswa' => $data['nama_siswa'],
                 'jk' => $data['jk'],
                 'tanggal_lahir' => $data['tanggal_lahir'] ?? null,
+                'no_hp' => $data['no_hp'] ?? null,
                 'alamat' => $data['alamat'] ?? null,
                 'id_kelas' => $data['id_kelas'],
             ]);

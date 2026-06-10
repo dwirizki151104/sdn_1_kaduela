@@ -8,6 +8,7 @@ use App\Models\PengumpulanTugas;
 use App\Models\PilihanJawaban;
 use App\Models\Quiz;
 use App\Models\Tugas;
+use App\Services\FonnteWhatsAppService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -128,7 +129,7 @@ class SiswaContentController extends Controller
             return back()->withErrors(['quiz' => 'Semua soal quiz harus dijawab.']);
         }
 
-        DB::transaction(function () use ($answers, $quiz, $siswa) {
+        $pengerjaan = DB::transaction(function () use ($answers, $quiz, $siswa) {
             $pengerjaan = PengerjaanQuiz::firstOrCreate(
                 [
                     'id_quiz' => $quiz->id_quiz,
@@ -167,7 +168,11 @@ class SiswaContentController extends Controller
                 'waktu_selesai' => now(),
                 'nilai' => $totalBobot > 0 ? round(($bobotBenar / $totalBobot) * 100, 2) : 0,
             ]);
+
+            return $pengerjaan->refresh()->load(['siswa', 'quiz.mengajar.mataPelajaran']);
         });
+
+        app(FonnteWhatsAppService::class)->sendQuizScore($pengerjaan);
 
         return back()->with('success', 'Quiz berhasil dikirim dan nilai sudah tersimpan.');
     }

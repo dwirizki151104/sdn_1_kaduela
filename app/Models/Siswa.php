@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Siswa extends Model
 {
     protected $table = 'siswa';
+
     protected $primaryKey = 'id_siswa';
 
     protected $fillable = [
@@ -15,6 +16,7 @@ class Siswa extends Model
         'nama_siswa',
         'jk',
         'tanggal_lahir',
+        'no_hp',
         'alamat',
         'id_kelas',
     ];

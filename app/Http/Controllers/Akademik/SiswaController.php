@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 class SiswaController extends CrudController
 {
     protected string $model = Siswa::class;
+
     protected array $relations = ['user', 'kelas'];
 
     protected function rules(?Model $record = null): array
@@ -19,6 +20,7 @@ class SiswaController extends CrudController
             'nama_siswa' => ['required', 'string', 'max:255'],
             'jk' => ['required', Rule::in(['L', 'P'])],
             'tanggal_lahir' => ['nullable', 'date'],
+            'no_hp' => ['nullable', 'string', 'max:20'],
             'alamat' => ['nullable', 'string'],
             'id_kelas' => ['required', 'exists:kelas,id_kelas'],
         ];
